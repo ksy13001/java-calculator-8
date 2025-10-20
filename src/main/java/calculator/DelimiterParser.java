@@ -2,10 +2,11 @@ package calculator;
 
 import java.util.Optional;
 
+import static calculator.DelimiterHeader.PREFIX;
+import static calculator.DelimiterHeader.SUFFIX;
+
 public class DelimiterParser {
 
-    private static final String PREFIX = "//";
-    private static final String SUFFIX = "\\n";
 
     private DelimiterParser() {
     }
@@ -15,17 +16,17 @@ public class DelimiterParser {
             return Optional.empty();
         }
 
-        int suffixIndex = requireSuffixIndex(input);
+        int suffixIndex = findSuffixIndex(input);
         return extractCustomDelimiter(input, suffixIndex)
                 .map(DelimiterParser::validateCustomDelimiter);
     }
 
     private static boolean hasPrefix(String input) {
-        return input.startsWith(PREFIX);
+        return input.startsWith(PREFIX.getValue());
     }
 
-    private static int requireSuffixIndex(String input) {
-        int suffixIndex = input.indexOf(SUFFIX, PREFIX.length());
+    private static int findSuffixIndex(String input) {
+        int suffixIndex = input.indexOf(SUFFIX.getValue(), PREFIX.getValue().length());
         if (suffixIndex == -1) {
             throw new IllegalArgumentException("잘못된 커스텀 구분자 형식입니다.");
         }
@@ -33,7 +34,7 @@ public class DelimiterParser {
     }
 
     private static Optional<String> extractCustomDelimiter(String input, int suffixIndex) {
-        String customDelimiter = input.substring(PREFIX.length(), suffixIndex);
+        String customDelimiter = input.substring(PREFIX.getValue().length(), suffixIndex);
         if (customDelimiter.isEmpty()) {
             return Optional.empty();
         }
