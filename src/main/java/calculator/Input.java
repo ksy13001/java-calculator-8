@@ -8,6 +8,13 @@ public class Input {
 
     static String readInput(){
         System.out.println(PROMPT);
-        return Console.readLine();
+        return validateInput(Console.readLine());
+    }
+
+    private static String validateInput(String input){
+        if(input == null){
+            throw new IllegalStateException("입력이 없습니다.");
+        }
+        return input;
     }
 }
